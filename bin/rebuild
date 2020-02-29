@@ -196,12 +196,23 @@ sub rebuild_rss_feeds () {
         my $now       = DateTime->now;
         my $year      = $now->year;
         my $rss       = XML::RSS->new( version => '2.0' );
+        $rss->add_module(
+            prefix => 'atom',
+            uri    => 'http://www.w3.org/2005/Atom'
+        );
         $rss->channel(
             title       => $type->{description},
             link        => "$base_url$directory",
             description => $type->{description},
             language    => 'en-us',
             copyright   => "Copyright $year, Curtis \"Ovid\" Poe",
+            atom        => {
+                'link' => {
+                    'href' => "$base_url$directory.rss",
+                    'rel'  => 'self',
+                    'type' => 'application/rss+xml'
+                }
+            },
 
             # RSS 2.0 requires RFC822 dates
             pubDate        => $now->strftime("%a, %d %b %Y %H:%M:%S %z"),
