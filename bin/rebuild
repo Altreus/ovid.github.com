@@ -185,7 +185,8 @@ sub rebuild_rss_feeds () {
 
     my $types =
       dbh()
-      ->selectall_arrayref( 'SELECT name, type, directory FROM article_types',
+      ->selectall_arrayref(
+        'SELECT name, type, directory, description FROM article_types',
         { Slice => {} } );
 
     foreach my $type ( $types->@* ) {
@@ -195,12 +196,12 @@ sub rebuild_rss_feeds () {
         my $year      = $now->year;
         my $rss       = XML::RSS->new( version => '2.0' );
         $rss->channel(
-            title => $name,
-            link  => "$base_url$directory",
-            description =>
-              "the one-stop-shop for all your Linux software needs",
-            language       => 'en-us',
-            copyright      => "Copyright $year, Curtis \"Ovid\" Poe",
+            title       => $type->{description},
+            link        => "$base_url$directory",
+            description => $type->{description},
+            language    => 'en-us',
+            copyright   => "Copyright $year, Curtis \"Ovid\" Poe",
+
             # RSS 2.0 requires RFC822 dates
             pubDate        => $now->strftime("%a, %d %b %Y %H:%M:%S %z"),
             managingEditor => 'curtis.poe@gmail.com (Curtis "Ovid" Poe)',
