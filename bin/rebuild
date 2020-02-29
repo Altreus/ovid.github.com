@@ -21,7 +21,7 @@ my @files = File::Find::Rule->file->in('root');
 
 preprocess_files(@files);
 rebuild_article_pagination();
-rebuil_rss_feeds();
+rebuild_rss_feeds();
 my ( $stdout, $stderr, $exit ) = capture {
     system(
         'ttree',  '-a',                      # process all files
@@ -180,7 +180,7 @@ END
     }
 }
 
-sub rebuil_rss_feeds () {
+sub rebuild_rss_feeds () {
     my $base_url = 'https://ovid.github.io/';
 
     my $types =
