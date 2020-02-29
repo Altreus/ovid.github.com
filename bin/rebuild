@@ -4,6 +4,7 @@
 use lib 'lib';
 
 use DateTime;
+use DateTime::Format::SQLite;
 use XML::RSS;
 use Less::Script;
 use Less::Pager;
@@ -218,12 +219,15 @@ sub rebuild_rss_feeds () {
   ORDER BY sort_order DESC
 SQL
         foreach my $article ( $articles->@* ) {
+            my $created =
+              DateTime::Format::SQLite->parse_datetime( $article->{created} );
             $rss->add_item(
                 title       => $article->{title},
                 link        => "$base_url$directory/$article->{slug}.html",
                 description => $article->{description},
                 creator     => 'Curtis "Ovid" Poe',
                 guid        => "$type->{type}/$article->{slug}",
+                pubDate     => $created->strftime("%a, %d %b %Y %H:%M:%S %z"),
             );
         }
         splat( "$type->{type}.rss", $rss->as_string );
