@@ -208,7 +208,7 @@ sub rebuild_rss_feeds () {
             copyright   => "Copyright $year, Curtis \"Ovid\" Poe",
             atom        => {
                 'link' => {
-                    'href' => "$base_url$directory.rss",
+                    'href' => "$base_url$type->{type}.rss",
                     'rel'  => 'self',
                     'type' => 'application/rss+xml'
                 }
